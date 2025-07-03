@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        onLogin(username, password);
+        onLogin(username, password); //Se delega al App.js
+        navigate('/'); // Redirige a la página de inicio después del login exitoso
     };
 
     return  (

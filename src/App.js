@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import {Routes, Route, Link, useNavigate} from 'react-router-dom';
 import ProductList from './components/ProductList';
 import Cart from './components/Cart';
 import SuccessPage from './components/SucessPage';
@@ -8,6 +8,7 @@ import axios from 'axios';
 
 function App() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   //carga usuario si hay token
 
   const loadUser = async token => {
@@ -47,17 +48,21 @@ function App() {
   }
 }, []);
 
-
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    setUser(null); //limpia el estado del usuario
+    navigate('/'); //redirecciona a la página de login
+  };
 
   return(
-    <Router>
-      <div>
-        <h1>Tienda Online</h1>
-        <nav>
-          <Link to="/">Inicio</Link> | <Link to="/cart">Carrito</Link>
+    <div>
+      <h1>Tienda Online</h1>
+      <nav>
+        <Link to="/">Inicio</Link> | <Link to="/cart">Carrito</Link>
           {user ? (
             <>
               <span> | Bienvenido, {user.username}</span>
+              <button onClick={handleLogout}>Cerrar sesión</button>
             </>
           ) : (
             <Link to="/login"> | Iniciar sesión</Link>
@@ -71,7 +76,6 @@ function App() {
           <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
         </Routes>
       </div>
-    </Router>
   )
 }
 
