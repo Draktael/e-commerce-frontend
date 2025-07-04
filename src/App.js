@@ -4,6 +4,7 @@ import ProductList from './components/ProductList';
 import Cart from './components/Cart';
 import SuccessPage from './components/SucessPage';
 import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
 import axios from 'axios';
 
 function App() {
@@ -25,8 +26,13 @@ function App() {
     console.error("Error al cargar usuario:", err.response?.data || err.message);
   }
 };
-
+ 
  const handleLogin = async (username,password) => {
+
+  if (!username || !password) {
+    alert("Usuario y contraseña son requeridos");
+    return;
+  } 
   try {
     const res = await axios.post('http://localhost:8000/api/token/', {
       username,
@@ -36,6 +42,8 @@ function App() {
     const token = res.data.access;
     localStorage.setItem('accessToken', token);
     loadUser(token);
+    navigate('/'); // Redirige a la página de inicio después del login exitoso
+    console.log("Login exitoso:", res.data);
   } catch (err) {
     console.error("Login fallido:", err.response?.data || err.message);
   }
@@ -65,7 +73,7 @@ function App() {
               <button onClick={handleLogout}>Cerrar sesión</button>
             </>
           ) : (
-            <Link to="/login"> | Iniciar sesión</Link>
+            <Link to="/login"> | Iniciar sesión</Link> 
           )}
         </nav>
 
@@ -74,6 +82,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
+          <Route path="/register" element={<RegisterForm />} />
         </Routes>
       </div>
   )
