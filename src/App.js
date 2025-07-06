@@ -9,6 +9,7 @@ import axios from 'axios';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
   //carga usuario si hay token
 
@@ -30,7 +31,7 @@ function App() {
  const handleLogin = async (username,password) => {
 
   if (!username || !password) {
-    alert("Usuario y contraseña son requeridos");
+    setLoginError("Usuario y contraseña son requeridos");
     return;
   } 
   try {
@@ -46,6 +47,7 @@ function App() {
     console.log("Login exitoso:", res.data);
   } catch (err) {
     console.error("Login fallido:", err.response?.data || err.message);
+    setLoginError("Error al iniciar sesión. Verifica tus credenciales.");
   }
 };
 
@@ -81,7 +83,10 @@ function App() {
           <Route path="/" element={<ProductList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/success" element={<SuccessPage />} />
-          <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
+          <Route 
+          path="/login" 
+          element={<LoginForm onLogin={handleLogin} error={loginError} />} 
+          />
           <Route path="/register" element={<RegisterForm />} />
         </Routes>
       </div>
