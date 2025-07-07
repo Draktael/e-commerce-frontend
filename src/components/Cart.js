@@ -16,6 +16,34 @@ const Cart= () => {
         });
     }, []);
 
+    const fetchCart = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8000/api/cart/${CART_ID}/`);
+      setCart(res.data);
+    } catch (err) {
+      console.error("Error al obtener el carrito:", err);
+    }
+  };
+    
+    const updateQuantity = async (product, newQuantity) => {
+  if (newQuantity < 1) {
+    alert("La cantidad debe ser al menos 1");
+    return;
+  }
+
+  try {
+    await axios.put(`http://localhost:8000/api/cart/${CART_ID}/update/`, {
+      product_id: product.id,
+      quantity: newQuantity,
+    });
+    fetchCart();
+  } catch (err) {
+    console.error("Error updating cart:", err);
+    alert("Error al actualizar el carrito. Inténtalo de nuevo más tarde.");
+  }
+};
+
+
     if (!cart) {
         return <div>Cargando carrito...</div>;
     }
@@ -43,6 +71,9 @@ const Cart= () => {
           {cart.items.map(item => (
             <li key={item.id}>
               {item.product.name} x {item.quantity}
+              <button onClick={() => updateQuantity(item.product, item.quantity - 1)}>-</button>
+              <button onClick={() => updateQuantity(item.product, item.quantity + 1)}>+</button>
+
             </li>
           ))}
         </ul>
@@ -53,5 +84,4 @@ const Cart= () => {
     </div>
     );
 };
-
 export default Cart;
