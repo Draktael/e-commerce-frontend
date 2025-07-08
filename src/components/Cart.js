@@ -27,9 +27,23 @@ const Cart= () => {
     
     const updateQuantity = async (product, newQuantity) => {
   if (newQuantity < 1) {
-    alert("La cantidad debe ser al menos 1");
-    return;
+    const confirmDelete = window.confirm("¿Estás seguro de que quieres eliminar este producto del carrito?");
+    if (!confirmDelete) {
+      return; // Si el usuario cancela, no hacemos nada
+    }
+    newQuantity = 0; // Si el usuario confirma, establecemos la cantidad a 0
   }
+  if (newQuantity === 0) {
+    // Si la cantidad es 0, eliminamos el producto del carrito
+    try {
+      await axios.delete(`http://localhost:8000/api/cart/${CART_ID}/remove/`, {
+        data: { product_id: product.id },
+      });
+      fetchCart();
+    } catch (err) {
+      console.error("Error al eliminar el producto del carrito:", err);
+    }
+    return;}
 
   try {
     await axios.put(`http://localhost:8000/api/cart/${CART_ID}/update/`, {
@@ -73,7 +87,6 @@ const Cart= () => {
               {item.product.name} x {item.quantity}
               <button onClick={() => updateQuantity(item.product, item.quantity - 1)}>-</button>
               <button onClick={() => updateQuantity(item.product, item.quantity + 1)}>+</button>
-
             </li>
           ))}
         </ul>
