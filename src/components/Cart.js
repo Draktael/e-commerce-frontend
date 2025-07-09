@@ -7,6 +7,17 @@ const Cart = () => {
   const fetchCart = async () => {
     try {
       const token = localStorage.getItem('accessToken');
+      // Si no hay token, se obtiene el carrito anónimo
+      if (!token) {
+        let anonCartId = localStorage.getItem('anonymousCartId');
+        let url = 'http://localhost:8000/api/cart/anonymous/';
+        if (anonCartId) {
+          url += `?cart_id=${anonCartId}`;
+        }
+        const res = await axios.get(url);
+        setCart(res.data);
+        localStorage.setItem('anonymousCartId', res.data.id);
+      }
       const res = await axios.get('http://localhost:8000/api/cart/authenticated/', {
         headers: {
           Authorization: `Bearer ${token}`
