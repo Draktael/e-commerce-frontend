@@ -1,9 +1,9 @@
 // src/components/HomePage.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ProductCard from "./ProductCard";
 
-const HomePage = () => {
+
+const HomePage = ({ fetchCartCount }) => {
   const [products, setProducts] = useState([]);
   const [cartId, setCartId] = useState(null);
 
@@ -48,6 +48,7 @@ const HomePage = () => {
         { product_id: productId, quantity: 1 },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
+      if (fetchCartCount) fetchCartCount();
       alert("Producto agregado al carrito");
     } catch (err) {
       console.error("Error al agregar producto:", err);
@@ -56,11 +57,30 @@ const HomePage = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>🛍️ Catálogo de Productos</h2>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px" }}>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-4xl font-bold text-center text-gray-800 mb-8">
+         Catálogo de Productos
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+          
+          <div
+            key={product.id}
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col"
+          >
+            <div className="h-40 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
+              <span className="text-gray-400">Imagen</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              {product.name}
+            </h3>
+            <p className="text-gray-600 font-medium mb-4">
+              ${product.price.toLocaleString("es-CL")}
+            </p>
+            <button className="mt-auto bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition-colors" onClick={() => handleAddToCart(product.id)}>
+              Agregar al carrito
+            </button>
+          </div>
         ))}
       </div>
     </div>
