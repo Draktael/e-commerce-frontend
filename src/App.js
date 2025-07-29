@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {Routes, Route, Link, useNavigate} from 'react-router-dom';
-import ProductList from './components/ProductList';
 import Cart from './components/Cart';
 import SuccessPage from './components/SucessPage';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import axios from 'axios';
+import HomePage from './components/HomePage';
+import './index.css';
+import './output.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -67,6 +69,7 @@ function App() {
   return(
     <div>
       <h1>Tienda Online</h1>
+      <h1 className="text-blue-500 text-3xl font-bold">¡Hola Tailwind 3.4!</h1>
       <nav>
         <Link to="/">Inicio</Link> | <Link to="/cart">Carrito</Link>
           {user ? (
@@ -80,7 +83,7 @@ function App() {
         </nav>
 
         <Routes>
-          <Route path="/" element={<ProductList />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route 
