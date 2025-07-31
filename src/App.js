@@ -7,6 +7,7 @@ import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import axios from 'axios';
 import HomePage from './components/HomePage';
+import Footer from './components/Footer';
 import './output.css';
 
 function App() {
@@ -92,19 +93,19 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     setUser(null); //limpia el estado del usuario
-    navigate('/'); //redirecciona a la página de login
+    navigate('/');
   };
 
   return (
     <div>
       <nav className="flex justify-between items-center p-4 bg-gray-100 shadow-md">
-        <Link to="/" className="text-4xl font-bold text-blue-600">sho.es</Link>
+        <Link to="/" className="text-4xl font-bold text-black-600">sho.es</Link>
         <div className="relative flex items-center gap-4">
-          <Link to="/cart" className="text-blue-600 text-3xl hover:text-blue-800">
+          <Link to="/cart" className="text-black text-3xl hover:text-gray-800">
             <FiShoppingCart />
           </Link>
           {cartCount > 0 && (
-            <span className="text-sm text-white bg-red-500 px-2 rounded-full absolute bottom-6 right-20">
+            <span className="text-sm text-black bg-yellow-500 px-[7px] rounded-full absolute bottom-6 right-[100px]">
               {cartCount}
             </span>
           )}
@@ -121,15 +122,14 @@ function App() {
           ) : (
             <Link
               to="/login"
-              className="text-blue-600 font-semibold hover:underline"
+              className="text-black hover:text-gray-800 font-medium"
             >
               Iniciar sesión
             </Link>
           )}
         </div>
       </nav>
-
-
+        
       <Routes>
         <Route path="/" element={<HomePage fetchCartCount={fetchCartCount} />} />
         <Route path="/cart" element={<Cart />} />
@@ -140,6 +140,7 @@ function App() {
         />
         <Route path="/register" element={<RegisterForm />} />
       </Routes>
+      <Footer />
     </div>
   )
 }
