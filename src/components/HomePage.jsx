@@ -1,6 +1,6 @@
 // src/components/HomePage.jsx
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 

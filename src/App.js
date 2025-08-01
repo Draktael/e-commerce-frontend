@@ -3,8 +3,9 @@ import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { FiShoppingCart } from 'react-icons/fi';
 import Cart from './components/Cart';
 import SuccessPage from './components/SucessPage';
-import LoginForm from './components/LoginForm';
+import Login from './components/Login';
 import RegisterForm from './components/RegisterForm';
+import Register from './components/Register';
 import axios from 'axios';
 import HomePage from './components/HomePage';
 import Footer from './components/Footer';
@@ -136,9 +137,9 @@ function App() {
         <Route path="/success" element={<SuccessPage />} />
         <Route
           path="/login"
-          element={<LoginForm onLogin={handleLogin} error={loginError} />}
+          element={<Login onLogin={handleLogin} error={loginError} />}
         />
-        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
       <Footer />
     </div>
