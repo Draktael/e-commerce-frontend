@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiShoppingCart } from 'react-icons/fi';
 import Cart from './components/Cart';
 import SuccessPage from './components/SucessPage';
 import Login from './components/Login';
-import RegisterForm from './components/RegisterForm';
 import Register from './components/Register';
 import axios from 'axios';
 import HomePage from './components/HomePage';
@@ -16,6 +15,7 @@ function App() {
   const [loginError, setLoginError] = useState(null);
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
   //carga usuario si hay token
 
   const loadUser = async token => {
@@ -48,6 +48,9 @@ function App() {
       const token = res.data.access;
       localStorage.setItem('accessToken', token);
       loadUser(token);
+      setLoginError(null); // Resetea el error al intentar iniciar sesión
+      setCartCount(0); // Resetea el conteo del carrito al iniciar sesión
+      fetchCartCount(); // Actualiza el conteo del carrito después de iniciar sesión
       navigate('/'); // Redirige a la página de inicio después del login exitoso
       console.log("Login exitoso:", res.data);
     } catch (err) {
@@ -89,11 +92,14 @@ function App() {
       loadUser(token);
     }
     fetchCartCount();
-  }, []);
+    setLoginError(null); // Resetea el error de login al cargar la aplicación
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     setUser(null); //limpia el estado del usuario
+    fetchCartCount(); // Resetea el conteo del carrito al cerrar sesión
+    setLoginError(null); // Resetea el error de login al cerrar sesión
     navigate('/');
   };
 
@@ -130,7 +136,7 @@ function App() {
           )}
         </div>
       </nav>
-        
+
       <Routes>
         <Route path="/" element={<HomePage fetchCartCount={fetchCartCount} />} />
         <Route path="/cart" element={<Cart />} />

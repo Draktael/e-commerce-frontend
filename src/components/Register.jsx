@@ -1,12 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
+    const navigate = useNavigate();
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -41,6 +43,10 @@ const Register = () => {
                   email
               });
               console.log("Registro exitoso:", res.data);
+
+              alert('Registro exitoso, ahora puedes iniciar sesión');
+              navigate('/login'); 
+              
               setUsername('');
               setPassword('');
               setConfirmPassword('');
