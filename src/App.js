@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiShoppingCart } from 'react-icons/fi';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Cart from './components/Cart';
 import SuccessPage from './components/SucessPage';
 import Login from './components/Login';
@@ -147,6 +149,7 @@ function App() {
         />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <ToastContainer position='top-center' autoClose={3000}/>
       <Footer />
     </div>
   )
