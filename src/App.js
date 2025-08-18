@@ -3,7 +3,7 @@ import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom'
 import { FiShoppingCart } from 'react-icons/fi';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Cart from './components/Cart';
+import Cart from './components/CartComplete';
 import SuccessPage from './components/SucessPage';
 import Login from './components/Login';
 import Register from './components/Register';
